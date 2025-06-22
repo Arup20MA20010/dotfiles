@@ -1,0 +1,5 @@
+vim.api.nvim_create_user_command("Getcp","CompetiTest receive contest",{desc="Get contest"})
+vim.api.nvim_create_user_command("Getpp","CompetiTest receive problem",{desc = "Get problems"})
+vim.api.nvim_create_user_command("AddTest","CompetiTest add_testcase",{desc="Add test case"})
+vim.api.nvim_create_user_command("EditTest","CompetiTest edit_testcase",{desc="Edit Test cases"})
+vim.api.nvim_create_user_command("CRun","CompetiTest run",{desc="Run code"})
