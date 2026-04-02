@@ -1,40 +1,81 @@
+local keymap = vim.keymap.set
+local opts = { noremap = true, silent = true }
 
-local map = vim.keymap.set
+vim.g.mapleader = " "
 
+-- Custom 3-way Number Toggle
+local function toggle_numbering()
+	local nu = vim.wo.number
+	local rnu = vim.wo.relativenumber
 
-map("n", ";", ":", { desc = "CMD enter command mode" })
-map("i", "jk", "<ESC>")
+	if nu == true and rnu == true then
+		-- State 1 (Relative) -> Move to State 2 (Absolute)
+		vim.opt.relativenumber = false
+		vim.opt.number = true
+		print("Numbering: Absolute")
+	elseif nu == true and rnu == false then
+		-- State 2 (Absolute) -> Move to State 3 (None)
+		vim.opt.number = false
+		vim.opt.relativenumber = false
+		print("Numbering: Off")
+	else
+		-- State 3 (None) -> Move back to State 1 (Relative)
+		vim.opt.number = true
+		vim.opt.relativenumber = true
+		print("Numbering: Relative")
+	end
+end
 
-map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
-map("n", "<leader><leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
-map("n", "<Leader>dl", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Debugger step into" })
-map("n", "<Leader>dj", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Debugger step over" })
-map("n", "<Leader>dk", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Debugger step out" })
-map("n", "<Leader>d<space>", "<cmd>lua require'dap'.continue()<CR>", { desc = "Debugger continue" })
-map("n", "<Leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Debugger toggle breakpoint" })
-map(
-  "n",
-  "<Leader>dd",
-  "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-  { desc = "Debugger set conditional breakpoint" }
-)
-map("n", "<Leader>de", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Debugger reset" })
-map("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Debugger run last" })
+keymap("n", "<leader>rn", toggle_numbering, { desc = "Toggle Numbering (Rel/Abs/Off)" })
 
-map(
-  "n",
-  "gl",
-  "<cmd>lua vim.diagnostic.open_float(0, { scope = 'line', border = 'single' })<CR>",
-  { desc = "Lsp show diagnostic" }
-)
-map("n", "<Leader>dF", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { desc = "Go to previous diagnostic" })
-map("n", "<Leader>df", "<cmd>lua vim.diagnostic.goto_next()<CR>", { desc = "Go to next diagnostic" })
-map("n", "<Leader>dt", "<cmd>Telescope diagnostics<CR>", { desc = "Telescope diagnostics" })
-map("n", "<Leader>da", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Lsp code action" })
-map("n", "L", function()
-  require("nvchad.tabufline").next()
-end, { desc = "Go to next buffer" })
-map("n", "H", function()
-  require("nvchad.tabufline").prev()
-end, { desc = "Go to previous buffer" })
+-- Window Navigation (Ctrl + hjkl)
+keymap("n", "<C-h>", "<C-w>h", opts)
+keymap("n", "<C-j>", "<C-w>j", opts)
+keymap("n", "<C-k>", "<C-w>k", opts)
+keymap("n", "<C-l>", "<C-w>l", opts)
+
+-- Window Resizing
+keymap("n", "<C-Up>", ":resize -2<CR>", opts)
+keymap("n", "<C-Down>", ":resize +2<CR>", opts)
+keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
+keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+
+-- Quality of Life
+keymap("i", "jk", "<ESC>", opts)
+keymap("n", "<leader>w", ":w<CR>", { desc = "Save" })
+keymap("n", "<leader>q", ":q<CR>", { desc = "Quit" })
+keymap("n", "<leader>nh", ":nohlsearch<CR>", { desc = "Clear Highlight" })
+
+-- Visual Mode Indenting
+keymap("v", "<", "<gv", opts)
+keymap("v", ">", ">gv", opts)
+
+-- SPLITTING
+keymap("n", "<leader>sv", "<C-w>v", { desc = "Split Vertical" })
+keymap("n", "<leader>sh", "<C-w>s", { desc = "Split Horizontal" })
+keymap("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
+keymap("n", "<leader>sx", "<cmd>close<cr>", { desc = "Close current split" })
+
+-- NAVIGATION (Ctrl + hjkl)
+keymap("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
+keymap("n", "<C-j>", "<C-w>j", { desc = "Move to below split" })
+keymap("n", "<C-k>", "<C-w>k", { desc = "Move to above split" })
+keymap("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
+
+-- RESIZING (Ctrl + Arrows)
+keymap("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase height" })
+keymap("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease height" })
+keymap("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease width" })
+keymap("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase width" })
+
+-- TABS
+keymap("n", "<leader>to", "<cmd>tabnew<cr>", { desc = "Open new tab" })
+keymap("n", "<leader>tx", "<cmd>tabclose<cr>", { desc = "Close current tab" })
+keymap("n", "<leader>tn", "<cmd>tabn<cr>", { desc = "Go to next tab" })
+keymap("n", "<leader>tp", "<cmd>tabp<cr>", { desc = "Go to previous tab" })
+-- Show diagnostics in a floating window
+keymap("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+
+-- Move between diagnostics (Go to next/previous "W")
+keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
+keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
