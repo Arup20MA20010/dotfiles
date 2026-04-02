@@ -110,8 +110,13 @@ alt-3 = 'workspace 3'
 alt-b = 'workspace B' # Browser
 alt-m = 'workspace M' # Music
 alt-t = 'workspace T' # Terminal
-alt-d = 'workspace D' # Discord
-alt-w = 'workspace W' # Whatsapp
+alt-d = 'workspace D' # dc1
+alt-v = 'workspace V' # VsCode
+alt-s = 'workspace S' # Slack
+alt-g = 'workspace G' # Gemini
+alt-p = 'workspace P' # Postman
+alt-c = 'workspace C' # Clickup
+
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
@@ -122,6 +127,12 @@ alt-shift-m = ['move-node-to-workspace M', 'workspace M']
 alt-shift-t = ['move-node-to-workspace T', 'workspace T']
 alt-shift-d = ['move-node-to-workspace D', 'workspace D']
 alt-shift-w = ['move-node-to-workspace W', 'workspace W']
+alt-shift-s = ['move-node-to-workspace S', 'workspace S']
+alt-shift-v = ['move-node-to-workspace V', 'workspace V']
+alt-shift-g = ['move-node-to-workspace G', 'workspace G']
+alt-shift-p = ['move-node-to-workspace P', 'workspace P']
+alt-shift-c = ['move-node-to-workspace C', 'workspace C']
+
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
